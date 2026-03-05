@@ -20,6 +20,14 @@ export const metadata: Metadata = {
   description: "Transform your books into AI conversations.",
 };
 
+/**
+ * Root layout component that provides the HTML skeleton, applies global fonts and styles, and renders the site navbar.
+ *
+ * The top-level HTML element has lang="en" and the body includes font CSS variables and utility classes. The Navbar is rendered once and the provided `children` are placed inside the body.
+ *
+ * @param children - The page content to render inside the layout's body
+ * @returns The root HTML structure (`<html>` containing `<body>`) with the Navbar and the given children
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

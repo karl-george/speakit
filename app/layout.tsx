@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import {IBM_Plex_Serif, Mona_Sans} from "next/font/google";
+
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 const ibmPlexSerif = IBM_Plex_Serif({
     variable: "--font-ibm-plex-serif", subsets: ['latin'], weight: ['400', '500', '600', '700'],
@@ -18,6 +20,14 @@ export const metadata: Metadata = {
   description: "Transform your books into AI conversations.",
 };
 
+/**
+ * Root layout component that provides the HTML skeleton, applies global fonts and styles, and renders the site navbar.
+ *
+ * The top-level HTML element has lang="en" and the body includes font CSS variables and utility classes. The Navbar is rendered once and the provided `children` are placed inside the body.
+ *
+ * @param children - The page content to render inside the layout's body
+ * @returns The root HTML structure (`<html>` containing `<body>`) with the Navbar and the given children
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,6 +38,7 @@ export default function RootLayout({
       <body
         className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
       >
+      <Navbar />
         {children}
       </body>
     </html>

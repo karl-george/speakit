@@ -4,6 +4,12 @@ import {twMerge} from 'tailwind-merge';
 import {DEFAULT_VOICE, voiceOptions} from './constants';
 
 
+/**
+ * Combines multiple class value inputs into a single className string and resolves Tailwind utility conflicts.
+ *
+ * @param inputs - One or more class values (strings, arrays, objects) to be merged
+ * @returns The resulting className string with Tailwind classes merged and conflicting utilities resolved
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -11,7 +17,12 @@ export function cn(...inputs: ClassValue[]) {
 // Serialize Mongoose documents to plain JSON objects (strips ObjectId, Date, etc.)
 export const serializeData = <T>(data: T): T => JSON.parse(JSON.stringify(data))
 
-// Auto generate slug
+/**
+ * Produces a URL-friendly slug from the given text.
+ *
+ * @param text - Input string; file extensions (e.g., ".pdf") will be removed before conversion.
+ * @returns The normalized slug: lowercase, trimmed, punctuation removed, spaces/underscores replaced with hyphens, and without leading or trailing hyphens.
+ */
 export function generateSlug(text: string): string {
   return text
       .replace(/\.[^/.]+$/, '') // Remove file extension (.pdf, .txt, etc.)
@@ -90,6 +101,13 @@ export const formatDuration = (seconds: number): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
+/**
+ * Parses a PDF file and returns segmented text content plus a cover image of the first page.
+ *
+ * @param file - The PDF file to parse
+ * @returns An object with `content`: an array of TextSegment objects (the PDF text split into segments), and `cover`: a PNG data URL of the rendered first page
+ * @throws Error if the PDF cannot be read or parsed, or if required rendering resources are unavailable (for example, unable to obtain a canvas context)
+ */
 export async function parsePDFFile(file: File) {
   try {
     const pdfjsLib = await import('pdfjs-dist');

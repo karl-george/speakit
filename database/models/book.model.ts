@@ -2,7 +2,7 @@ import {IBook} from "@/types";
 import {model, models, Schema} from "mongoose";
 
 const BookSchema = new Schema<IBook>({
-    clerkId: { type: String, required: true},
+    clerkId: { type: String, required: true, index: true},
     title: { type: String, required: true},
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true},
     author: { type: String, required: true},

@@ -70,7 +70,7 @@ const BookDetailsPage = async ({
 
               <div className="vapi-status-indicator">
                 <span className="vapi-status-text">
-                  Voice: {book.voice || "Daniel"}
+                  Voice: {book.persona || "Daniel"}
                 </span>
               </div>
 

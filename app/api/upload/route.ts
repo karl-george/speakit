@@ -3,6 +3,17 @@ import {handleUpload, HandleUploadBody} from "@vercel/blob/client";
 import {auth} from "@clerk/nextjs/server";
 import {MAX_FILE_SIZE} from "@/lib/constants";
 
+/**
+ * Handles file upload requests and returns the Vercel Blob upload response.
+ *
+ * Authenticates the caller, enforces allowed content types and maximum file size,
+ * attaches the uploader's `userId` to the upload token payload, and returns the
+ * JSON response produced by the upload process. On error returns a JSON object
+ * `{ error: string }` with HTTP status 401 for authentication failures or 500 for other errors.
+ *
+ * @param request - Incoming Request whose JSON body conforms to `HandleUploadBody`
+ * @returns A NextResponse containing the upload result JSON on success, or `{ error: string }` with an appropriate HTTP status on failure
+ */
 export async function POST(request: Request): Promise<NextResponse> {
     const body = (await request.json()) as HandleUploadBody
 

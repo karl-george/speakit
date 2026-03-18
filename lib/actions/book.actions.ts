@@ -31,44 +31,44 @@ export const createBook = async (data: CreateBook) => {
             success: true,
             data: serializeData(book)
         }
-    } catch (error) {
-        console.error("Error creating a  book", error)
+    } catch (e) {
+        console.error("Error creating a  book", e)
         return {
             success: false,
-            error
+            error: e
         }
     }
 }
 
-export const saveBookSegments = async (bookId: string, clerkID: string, segments: TextSegment[]) => {
+export const saveBookSegments = async (bookId: string, clerkId: string, segments: TextSegment[]) => {
     try {
-        await connectToDatabase()
+        await connectToDatabase();
 
-        console.log("Saving book segments")
+        console.log('Saving book segments...');
 
-        const segmentsToInsert = segments.map(({text, segmentIndex, pageNumber, wordCount}) => ({
-            clerkID, bookId, content: text, segmentIndex, pageNumber, wordCount
-        }))
+        const segmentsToInsert = segments.map(({ text, segmentIndex, pageNumber, wordCount }) => ({
+            clerkId, bookId, content: text, segmentIndex, pageNumber, wordCount
+        }));
 
-        await BookSegment.insertMany(segmentsToInsert)
+        await BookSegment.insertMany(segmentsToInsert);
 
-        await Book.findByIdAndUpdate(bookId, {totalSegments: segments.length})
+        await Book.findByIdAndUpdate(bookId, { totalSegments: segments.length });
 
-        console.log("Successfully saved segments")
+        console.log('Book segments saved successfully.');
 
         return {
             success: true,
             data: { segmentsCreated: segments.length}
         }
-    } catch (error) {
-        console.error("Error saving book segments", error)
+    } catch (e) {
+        console.error("Error saving book segments", e)
 
         await BookSegment.deleteMany({bookId})
         await Book.findByIdAndDelete(bookId)
         console.log("Deleted book segments and book due to failure to save segments")
         return {
             success: false,
-            error
+            error: e
         }
     }
 }
@@ -91,11 +91,11 @@ export const checkBookExists = async (title: string) => {
         return {
             exists: false,
         }
-    } catch (error) {
-        console.error("Error checking book exists", error)
+    } catch (e) {
+        console.error("Error checking book exists", e)
         return {
             exists: false,
-            error
+            error: e
         }
     }
 }

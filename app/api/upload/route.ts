@@ -15,9 +15,8 @@ import { MAX_FILE_SIZE } from "@/lib/constants";
  * @returns A NextResponse containing the upload result JSON on success, or `{ error: string }` with an appropriate HTTP status on failure
  */
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
-
   try {
+    const body = (await request.json()) as HandleUploadBody;
     const jsonResponse = await handleUpload({
       token: process.env.BLOB_READ_WRITE_TOKEN,
       body,
@@ -54,9 +53,14 @@ export async function POST(request: Request): Promise<NextResponse> {
     const message =
       error instanceof Error ? error.message : "An unknown error occurred";
     const status = message.includes("Unauthorised") ? 401 : 500;
+
+    console.error("Error handling upload:", error);
+
+    const clientMessage = status === 401 ? "Unauthorised" : "Upload failed";
+
     return NextResponse.json(
       {
-        error: message,
+        error: clientMessage,
       },
       { status },
     );

@@ -44,9 +44,13 @@ const BookDetailsPage = async ({
               priority
             />
             <div className="vapi-mic-wrapper">
-              <button className="vapi-mic-btn vapi-mic-btn-inactive shadow-md w-15! h-15!">
-                <MicOff className="size-7 text-[#212a3b]" />
-              </button>
+<button
+  type="button"
+  aria-label="Start voice conversation"
+  className="vapi-mic-btn vapi-mic-btn-inactive shadow-md w-15! h-15!"
+>
+  <MicOff className="size-7 text-[`#212a3b`]" />
+</button>
             </div>
           </div>
 

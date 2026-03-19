@@ -14,6 +14,12 @@ import {
   startVoiceSession,
 } from "@/lib/actions/session.action";
 
+/**
+ * Create a ref that always holds the latest provided value.
+ *
+ * @param value - The value to keep synchronized on the returned ref
+ * @returns A mutable ref object whose `current` property is updated whenever `value` changes
+ */
 export function useLatestRef<T>(value: T) {
   const ref = useRef(value);
 
@@ -30,6 +36,12 @@ const SECONDS_PER_MINUTE = 60;
 const TIME_WARNING_THRESHOLD = 60; // Show warning when this many seconds remain
 
 let vapi: InstanceType<typeof Vapi>;
+/**
+ * Lazily creates and returns the module-level singleton Vapi client.
+ *
+ * @returns The shared `Vapi` instance used by this module.
+ * @throws Error if the `NEXT_PUBLIC_VAPI_API_KEY` environment variable is not set.
+ */
 function getVapi() {
   if (!vapi) {
     if (!VAPI_API_KEY) {
@@ -50,6 +62,26 @@ export type CallStatus =
   | "thinking"
   | "speaking";
 
+/**
+ * Manage a Vapi voice call lifecycle and expose UI-facing state and controls for a given book.
+ *
+ * Sets up and cleans up Vapi event handlers, tracks call status, streaming transcripts,
+ * message history, session duration, and server-side session tracking; provides start/stop controls
+ * and user-facing limit/error messages.
+ *
+ * @param book - The book whose metadata and persona are used to configure the voice assistant
+ * @returns An object with the following properties:
+ *  - `status` — Current call status (`CallStatus`)
+ *  - `isActive` — `true` when a call is in progress (starting, listening, thinking, or speaking)
+ *  - `messages` — Array of finalized transcript messages `{ role, content }`
+ *  - `currentMessage` — Streaming partial assistant transcript
+ *  - `currentUserMessage` — Streaming partial user transcript
+ *  - `duration` — Seconds elapsed since the call started
+ *  - `start` — Function to initiate a voice session
+ *  - `stop` — Function to stop the active voice session
+ *  - `limitError` — User-facing error/limit message or `null`
+ *  - `clearError` — Function to clear `limitError`
+ */
 export function useVapi(book: IBook) {
   const { userId } = useAuth();
 
